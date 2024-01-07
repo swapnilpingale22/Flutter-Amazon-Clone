@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_amazon_clone/common/widgets/custom_button.dart';
 import 'package:flutter_amazon_clone/common/widgets/custom_textfield.dart';
-import 'package:flutter_amazon_clone/constants/globall_variables.dart';
+import 'package:flutter_amazon_clone/constants/global_variables.dart';
 import 'package:flutter_amazon_clone/features/auth/services/auth_service.dart';
 
 enum Auth {
@@ -168,6 +168,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           CustomTextField(
                             controller: _emailController,
                             hintText: 'Email',
+                            keyboardType: TextInputType.emailAddress,
                           ),
                           const SizedBox(
                               height: GlobalVariables.defaultPadding),
