@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_amazon_clone/constants/global_variables.dart';
 import 'package:flutter_amazon_clone/features/home/widgets/address_box.dart';
+import 'package:flutter_amazon_clone/features/home/widgets/carousel_image.dart';
+import 'package:flutter_amazon_clone/features/home/widgets/deals_of_the_day.dart';
 import 'package:flutter_amazon_clone/features/home/widgets/top_categories.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -87,12 +89,17 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       //body
-      body: const Column(
-        children: [
-          AddressBox(),
-          SizedBox(height: 10),
-          TopCategories(),
-        ],
+      body: const SingleChildScrollView(
+        child: Column(
+          children: [
+            AddressBox(),
+            SizedBox(height: 10),
+            TopCategories(),
+            SizedBox(height: 10),
+            CarouselImage(),
+            DealOfTheDay(),
+          ],
+        ),
       ),
     );
   }
