@@ -1,23 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
-  final TextInputType? keyboardType;
-  final bool? obscureTextValue;
+  final TextInputType keyboardType;
+  final bool obscureTextValue;
+  final int maxLines;
   const CustomTextField({
-    super.key,
+    Key? key,
     required this.controller,
     required this.hintText,
-    this.keyboardType,
+    this.keyboardType = TextInputType.name,
     this.obscureTextValue = false,
-  });
+    this.maxLines = 1,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       keyboardType: keyboardType,
-      obscureText: obscureTextValue!,
+      obscureText: obscureTextValue,
       controller: controller,
       decoration: InputDecoration(
         hintText: hintText,
@@ -36,6 +39,7 @@ class CustomTextField extends StatelessWidget {
         }
         return null;
       },
+      maxLines: maxLines,
     );
   }
 }
