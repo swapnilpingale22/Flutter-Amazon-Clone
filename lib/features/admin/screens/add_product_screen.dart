@@ -7,6 +7,7 @@ import 'package:flutter_amazon_clone/common/widgets/custom_textfield.dart';
 import 'package:flutter_amazon_clone/constants/global_variables.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_amazon_clone/constants/utils.dart';
+import 'package:flutter_amazon_clone/features/admin/services/admin_services.dart';
 
 class AddproductScreen extends StatefulWidget {
   static const String routeName = '/add-product';
@@ -23,6 +24,8 @@ class _AddproductScreenState extends State<AddproductScreen> {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
 
+  final AdminServices adminServices = AdminServices();
+
   @override
   void dispose() {
     super.dispose();
@@ -34,6 +37,7 @@ class _AddproductScreenState extends State<AddproductScreen> {
 
   String category = 'Mobiles';
   List<File> images = [];
+  final _addProductFormKey = GlobalKey<FormState>();
 
   List<String> productCategories = [
     'Mobiles',
@@ -48,6 +52,20 @@ class _AddproductScreenState extends State<AddproductScreen> {
     setState(() {
       images = res;
     });
+  }
+
+  void sellProduct() {
+    if (_addProductFormKey.currentState!.validate() && images.isNotEmpty) {
+      adminServices.sellProduct(
+        context: context,
+        name: productNameController.text,
+        description: descriptionController.text,
+        price: double.parse(priceController.text),
+        quantity: double.parse(quantityController.text),
+        category: category,
+        images: images,
+      );
+    }
   }
 
   @override
@@ -74,6 +92,7 @@ class _AddproductScreenState extends State<AddproductScreen> {
 
       body: SingleChildScrollView(
         child: Form(
+          key: _addProductFormKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
@@ -178,7 +197,7 @@ class _AddproductScreenState extends State<AddproductScreen> {
                 const SizedBox(height: 10),
                 CustomButton(
                   text: 'Sell',
-                  onTap: () {},
+                  onTap: sellProduct,
                 ),
               ],
             ),
