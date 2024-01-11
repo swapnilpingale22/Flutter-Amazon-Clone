@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_amazon_clone/constants/error_handling.dart';
@@ -40,10 +43,10 @@ class AdminServices {
       Product product = Product(
         name: name,
         description: description,
-        quantity: quantity,
+        quantity: quantity.toInt(),
         images: imageUrls,
         category: category,
-        price: price,
+        price: price.toInt(),
       );
 
       http.Response res = await http.post(
@@ -65,5 +68,39 @@ class AdminServices {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  //get all products
+  Future<List<Product>> fetchAllProducts(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    List<Product> productList = [];
+    try {
+      http.Response res = await http.get(
+        Uri.parse('$uri/admin/get-products'),
+        headers: <String, String>{
+          'Content-Type': 'application/Json; charset=UTF-8',
+          'x-auth-token': userProvider.user.token
+        },
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          for (int i = 0; i < jsonDecode(res.body).length; i++) {
+            productList.add(
+              Product.fromJson(
+                jsonEncode(
+                  jsonDecode(res.body)[i],
+                ),
+              ),
+            );
+          }
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return productList;
   }
 }
