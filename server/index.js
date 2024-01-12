@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 //import from other files
 const authRouter = require("./routes/auth");
 const adminRouter = require("./routes/admin");
+const productRouter = require("./routes/product");
 
 //init
 const PORT = 3000;
@@ -15,9 +16,10 @@ const localUrl = "mongodb://127.0.0.1:27017/Amazon_Clone_Db"
 app.use(express.json());
 app.use(authRouter);
 app.use(adminRouter);
+app.use(productRouter);
 
 //connections
-mongoose.connect(localUrl)
+mongoose.connect(Url)
     .then(() => {
         console.log('Connected to MongoDB');
     })
