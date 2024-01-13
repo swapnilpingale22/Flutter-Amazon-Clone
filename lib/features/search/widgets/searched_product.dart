@@ -68,7 +68,7 @@ class SearchedProduct extends StatelessWidget {
                     child: const Text(
                       'In stock',
                       style: TextStyle(
-                        color: Colors.teal,
+                        color: Colors.green,
                       ),
                     ),
                   ),
