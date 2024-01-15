@@ -34,10 +34,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     super.initState();
     double totalRating = 0;
     for (int i = 0; i < widget.product.rating!.length; i++) {
-      totalRating += widget.product.rating![i].rating;
+      totalRating += widget.product.rating![i].rating.toDouble();
+      print(widget.product.rating![i].rating.runtimeType);
       if (widget.product.rating![i].userId ==
           Provider.of<UserProvider>(context, listen: false).user.id) {
-        myRating = widget.product.rating![i].rating;
+        myRating = widget.product.rating![i].rating.toDouble();
       }
     }
     if (totalRating != 0) {
@@ -200,7 +201,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                   children: [
                     TextSpan(
-                      text: '₹  ${widget.product.price}',
+                      text: '₹  ${widget.product.price.toString()}',
                       style: const TextStyle(
                         fontSize: 22,
                         color: Color.fromARGB(221, 206, 33, 20),

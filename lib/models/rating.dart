@@ -4,7 +4,7 @@ import 'dart:convert';
 
 class Rating {
   final String userId;
-  final double rating;
+  final num rating;
   Rating({
     required this.userId,
     required this.rating,
@@ -20,7 +20,7 @@ class Rating {
   factory Rating.fromMap(Map<String, dynamic> map) {
     return Rating(
       userId: map['userId'] as String,
-      rating: map['rating'] as double,
+      rating: map['rating'] as num,
     );
   }
 
