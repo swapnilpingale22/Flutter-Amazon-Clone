@@ -35,7 +35,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     double totalRating = 0;
     for (int i = 0; i < widget.product.rating!.length; i++) {
       totalRating += widget.product.rating![i].rating.toDouble();
-      print(widget.product.rating![i].rating.runtimeType);
       if (widget.product.rating![i].userId ==
           Provider.of<UserProvider>(context, listen: false).user.id) {
         myRating = widget.product.rating![i].rating.toDouble();
@@ -51,6 +50,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       context,
       SearchScreen.routeName,
       arguments: query,
+    );
+  }
+
+  void addToCart() {
+    productDetailsServices.addToCart(
+      context: context,
+      product: widget.product,
     );
   }
 
@@ -232,7 +238,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   CustomButton(
                     text: 'Add to Cart',
                     color: const Color.fromRGBO(254, 216, 19, 1),
-                    onTap: () {},
+                    onTap: addToCart,
                   ),
                   const SizedBox(height: 15),
                   CustomButton(
