@@ -12,22 +12,19 @@ import 'package:flutter_amazon_clone/providers/user_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-class ProductDetailsServices {
-  void addToCart({
+class CartServices {
+  void removeFromCart({
     required BuildContext context,
     required Product product,
   }) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     try {
-      http.Response res = await http.post(
-        Uri.parse('$uri/api/add-to-cart'),
+      http.Response res = await http.delete(
+        Uri.parse('$uri/api/remove_from-cart/${product.id}'),
         headers: <String, String>{
           'Content-Type': 'application/Json; charset=UTF-8',
           'x-auth-token': userProvider.user.token
         },
-        body: jsonEncode({
-          'id': product.id,
-        }),
       );
       httpErrorHandle(
         response: res,
@@ -38,37 +35,7 @@ class ProductDetailsServices {
           );
           userProvider.setUserFromModel(user);
 
-          showSnackBar(context, 'Product added');
-        },
-      );
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
-  }
-
-  void rateProduct({
-    required BuildContext context,
-    required Product product,
-    required double rating,
-  }) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    try {
-      http.Response res = await http.post(
-        Uri.parse('$uri/api/rate-product'),
-        headers: <String, String>{
-          'Content-Type': 'application/Json; charset=UTF-8',
-          'x-auth-token': userProvider.user.token
-        },
-        body: jsonEncode({
-          'id': product.id,
-          'rating': rating,
-        }),
-      );
-      httpErrorHandle(
-        response: res,
-        context: context,
-        onSuccess: () {
-          showSnackBar(context, 'Thank you for rating the product.');
+          showSnackBar(context, 'Product removed');
         },
       );
     } catch (e) {
