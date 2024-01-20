@@ -1,12 +1,21 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_amazon_clone/common/widgets/custom_textfield.dart';
+import 'package:flutter_amazon_clone/common/widgets/loader.dart';
 import 'package:flutter_amazon_clone/constants/global_variables.dart';
+import 'package:flutter_amazon_clone/payment_configurations.dart';
 import 'package:flutter_amazon_clone/providers/user_provider.dart';
+import 'package:pay/pay.dart';
 import 'package:provider/provider.dart';
 
 class AddressScreen extends StatefulWidget {
   static const String routeName = '/address';
-  const AddressScreen({super.key});
+  final String totalAmount;
+  const AddressScreen({
+    super.key,
+    required this.totalAmount,
+  });
 
   @override
   State<AddressScreen> createState() => _AddressScreenState();
@@ -20,6 +29,21 @@ class _AddressScreenState extends State<AddressScreen> {
 
   final _addressFormKey = GlobalKey<FormState>();
 
+  // String os = Platform.operatingSystem;
+  List<PaymentItem> paymentItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    paymentItems.add(
+      PaymentItem(
+        amount: widget.totalAmount,
+        label: 'Total Amount',
+        status: PaymentItemStatus.final_price,
+      ),
+    );
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -31,6 +55,36 @@ class _AddressScreenState extends State<AddressScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var applePayButton = ApplePayButton(
+      paymentConfiguration: PaymentConfiguration.fromJsonString(
+        defaultApplePay,
+      ),
+      onPaymentResult: (result) => debugPrint(
+        'Payment result: $result',
+      ),
+      paymentItems: paymentItems,
+      style: ApplePayButtonStyle.black,
+      width: double.infinity,
+      height: 50,
+      type: ApplePayButtonType.buy,
+      margin: const EdgeInsets.only(top: 15),
+      loadingIndicator: const Center(child: Loader()),
+    );
+
+    var googlePayButton = GooglePayButton(
+      paymentConfiguration:
+          PaymentConfiguration.fromJsonString(defaultGooglePay),
+      onPaymentResult: (result) => debugPrint(
+        'Payment result: $result',
+      ),
+      paymentItems: paymentItems,
+      width: double.infinity,
+      height: 50,
+      type: GooglePayButtonType.buy,
+      margin: const EdgeInsets.only(top: 15),
+      loadingIndicator: const Center(child: Loader()),
+    );
+
     var address = context.watch<UserProvider>().user.address;
 
     return Scaffold(
@@ -110,6 +164,7 @@ class _AddressScreenState extends State<AddressScreen> {
                   ],
                 ),
               ),
+              if (Platform.isIOS) applePayButton else googlePayButton
             ],
           ),
         ),
