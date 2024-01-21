@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_amazon_clone/common/widgets/custom_textfield.dart';
 import 'package:flutter_amazon_clone/common/widgets/loader.dart';
 import 'package:flutter_amazon_clone/constants/global_variables.dart';
+import 'package:flutter_amazon_clone/constants/utils.dart';
 import 'package:flutter_amazon_clone/payment_configurations.dart';
 import 'package:flutter_amazon_clone/providers/user_provider.dart';
 import 'package:pay/pay.dart';
@@ -29,7 +30,8 @@ class _AddressScreenState extends State<AddressScreen> {
 
   final _addressFormKey = GlobalKey<FormState>();
 
-  // String os = Platform.operatingSystem;
+  String adddressToBeUsed = '';
+
   List<PaymentItem> paymentItems = [];
 
   @override
@@ -44,6 +46,28 @@ class _AddressScreenState extends State<AddressScreen> {
     );
   }
 
+  void payPressed(String addressFromProvider) {
+    adddressToBeUsed = '';
+
+    bool isForm = flatBuildingController.text.isNotEmpty ||
+        areaController.text.isNotEmpty ||
+        pincodeController.text.isNotEmpty ||
+        cityController.text.isNotEmpty;
+
+    if (isForm) {
+      if (_addressFormKey.currentState!.validate()) {
+        adddressToBeUsed =
+            '${flatBuildingController.text}, ${areaController.text}, ${cityController.text} - ${pincodeController.text}';
+      } else {
+        throw Exception('Please fill all the values!');
+      }
+    } else if (addressFromProvider.isNotEmpty) {
+      adddressToBeUsed = addressFromProvider;
+    } else {
+      showSnackBar(context, 'Error');
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -55,6 +79,8 @@ class _AddressScreenState extends State<AddressScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var address = context.watch<UserProvider>().user.address;
+
     var applePayButton = ApplePayButton(
       paymentConfiguration: PaymentConfiguration.fromJsonString(
         defaultApplePay,
@@ -69,6 +95,7 @@ class _AddressScreenState extends State<AddressScreen> {
       type: ApplePayButtonType.buy,
       margin: const EdgeInsets.only(top: 15),
       loadingIndicator: const Center(child: Loader()),
+      onPressed: () => payPressed(address),
     );
 
     var googlePayButton = GooglePayButton(
@@ -83,9 +110,8 @@ class _AddressScreenState extends State<AddressScreen> {
       type: GooglePayButtonType.buy,
       margin: const EdgeInsets.only(top: 15),
       loadingIndicator: const Center(child: Loader()),
+      onPressed: () => payPressed(address),
     );
-
-    var address = context.watch<UserProvider>().user.address;
 
     return Scaffold(
       appBar: PreferredSize(
@@ -152,13 +178,11 @@ class _AddressScreenState extends State<AddressScreen> {
                     CustomTextField(
                       controller: pincodeController,
                       hintText: 'Pincode',
-                      obscureTextValue: true,
                     ),
                     const SizedBox(height: GlobalVariables.defaultPadding),
                     CustomTextField(
                       controller: cityController,
                       hintText: 'Town/City',
-                      obscureTextValue: true,
                     ),
                     const SizedBox(height: GlobalVariables.defaultPadding),
                   ],
