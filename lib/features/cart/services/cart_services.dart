@@ -22,7 +22,7 @@ class CartServices {
       http.Response res = await http.delete(
         Uri.parse('$uri/api/remove_from-cart/${product.id}'),
         headers: <String, String>{
-          'Content-Type': 'application/Json; charset=UTF-8',
+          'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token
         },
       );

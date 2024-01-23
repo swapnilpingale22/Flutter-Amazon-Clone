@@ -21,7 +21,7 @@ class HomeServices {
       http.Response res = await http.get(
         Uri.parse('$uri/api/products?category=$category'),
         headers: <String, String>{
-          'Content-Type': 'application/Json; charset=UTF-8',
+          'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token
         },
       );
@@ -64,7 +64,7 @@ class HomeServices {
       http.Response res = await http.get(
         Uri.parse('$uri/api/deal-of-day'),
         headers: <String, String>{
-          'Content-Type': 'application/Json; charset=UTF-8',
+          'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token
         },
       );

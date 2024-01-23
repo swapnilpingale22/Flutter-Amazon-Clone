@@ -36,7 +36,7 @@ class AuthService {
         Uri.parse('$uri/api/signup'),
         body: user.toJson(),
         headers: <String, String>{
-          'Content-Type': 'application/Json; charset=UTF-8',
+          'Content-Type': 'application/json; charset=UTF-8',
         },
       );
       httpErrorHandle(
@@ -106,7 +106,7 @@ class AuthService {
       var tokenRes = await http.post(
         Uri.parse('$uri/tokenIsValid'),
         headers: <String, String>{
-          'Content-Type': 'application/Json; charset=UTF-8',
+          'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': token!
         },
       );
@@ -117,7 +117,7 @@ class AuthService {
         http.Response userRes = await http.get(
           Uri.parse('$uri/'),
           headers: <String, String>{
-            'Content-Type': 'application/Json; charset=UTF-8',
+            'Content-Type': 'application/json; charset=UTF-8',
             'x-auth-token': token
           },
         );

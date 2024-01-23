@@ -52,7 +52,7 @@ class AdminServices {
       http.Response res = await http.post(
         Uri.parse('$uri/admin/add-product'),
         headers: <String, String>{
-          'Content-Type': 'application/Json; charset=UTF-8',
+          'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token
         },
         body: product.toJson(),
@@ -78,7 +78,7 @@ class AdminServices {
       http.Response res = await http.get(
         Uri.parse('$uri/admin/get-products'),
         headers: <String, String>{
-          'Content-Type': 'application/Json; charset=UTF-8',
+          'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token
         },
       );
@@ -116,7 +116,7 @@ class AdminServices {
       http.Response res = await http.post(
         Uri.parse('$uri/admin/delete-product'),
         headers: <String, String>{
-          'Content-Type': 'application/Json; charset=UTF-8',
+          'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token
         },
         body: jsonEncode({

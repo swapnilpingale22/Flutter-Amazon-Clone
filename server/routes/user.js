@@ -68,7 +68,7 @@ userRouter.delete('/api/remove_from-cart/:id', auth, async (req, res) => {
 userRouter.post('/api/save-user-address', auth, async (req, res) => {
     try {
 
-        const { address } = res.body;
+        const { address } = req.body;
         let user = await User.findById(req.user);
         user.address = address;
         user = await user.save();
@@ -83,7 +83,7 @@ userRouter.post('/api/save-user-address', auth, async (req, res) => {
 userRouter.post('/api/order', auth, async (req, res) => {
     try {
 
-        const { cart, totalPrice, address } = res.body;
+        const { cart, totalPrice, address } = req.body;
         let products = [];
 
         for (let i = 0; i < cart.length; i++) {
@@ -107,7 +107,7 @@ userRouter.post('/api/order', auth, async (req, res) => {
             userId: req.user,
             orderedAt: new Date().getTime(),
         });
-        
+
         order = await order.save();
 
         res.json(order);

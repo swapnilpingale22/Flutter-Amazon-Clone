@@ -199,6 +199,7 @@ class _AddressScreenState extends State<AddressScreen> {
                     CustomTextField(
                       controller: flatBuildingController,
                       hintText: 'Flat, House No, Building',
+                      keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: GlobalVariables.defaultPadding),
                     CustomTextField(
@@ -210,6 +211,7 @@ class _AddressScreenState extends State<AddressScreen> {
                     CustomTextField(
                       controller: pincodeController,
                       hintText: 'Pincode',
+                      keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: GlobalVariables.defaultPadding),
                     CustomTextField(

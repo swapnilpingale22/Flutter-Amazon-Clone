@@ -80,10 +80,10 @@ const String defaultGooglePay = '''{
         "parameters": {
           "allowedCardNetworks": ["VISA", "MASTERCARD"],
           "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-          "billingAddressRequired": true,
+          "billingAddressRequired": false,
           "billingAddressParameters": {
             "format": "FULL",
-            "phoneNumberRequired": true
+            "phoneNumberRequired": false
           }
         }
       }
