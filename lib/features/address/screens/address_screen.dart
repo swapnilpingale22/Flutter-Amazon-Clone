@@ -1,10 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_amazon_clone/common/widgets/custom_textfield.dart';
 import 'package:flutter_amazon_clone/common/widgets/loader.dart';
 import 'package:flutter_amazon_clone/constants/global_variables.dart';
 import 'package:flutter_amazon_clone/constants/utils.dart';
+import 'package:flutter_amazon_clone/features/address/services/address_services.dart';
 import 'package:flutter_amazon_clone/payment_configurations.dart';
 import 'package:flutter_amazon_clone/providers/user_provider.dart';
 import 'package:pay/pay.dart';
@@ -34,6 +34,17 @@ class _AddressScreenState extends State<AddressScreen> {
 
   List<PaymentItem> paymentItems = [];
 
+  final AddressServices addressServices = AddressServices();
+
+  @override
+  void dispose() {
+    super.dispose();
+    flatBuildingController.dispose();
+    areaController.dispose();
+    pincodeController.dispose();
+    cityController.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +54,40 @@ class _AddressScreenState extends State<AddressScreen> {
         label: 'Total Amount',
         status: PaymentItemStatus.final_price,
       ),
+    );
+  }
+
+  void onApplePayResult(res) {
+    if (Provider.of<UserProvider>(context, listen: false)
+        .user
+        .address
+        .isEmpty) {
+      addressServices.saveUserAddress(
+        context: context,
+        address: adddressToBeUsed,
+      );
+    }
+    addressServices.placeOrder(
+      context: context,
+      address: adddressToBeUsed,
+      totalSum: double.parse(widget.totalAmount),
+    );
+  }
+
+  void onGooglePayResult(res) {
+    if (Provider.of<UserProvider>(context, listen: false)
+        .user
+        .address
+        .isEmpty) {
+      addressServices.saveUserAddress(
+        context: context,
+        address: adddressToBeUsed,
+      );
+    }
+    addressServices.placeOrder(
+      context: context,
+      address: adddressToBeUsed,
+      totalSum: double.parse(widget.totalAmount),
     );
   }
 
@@ -64,17 +109,8 @@ class _AddressScreenState extends State<AddressScreen> {
     } else if (addressFromProvider.isNotEmpty) {
       adddressToBeUsed = addressFromProvider;
     } else {
-      showSnackBar(context, 'Error');
+      showSnackBar(context, 'Error. Address is empty!');
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    flatBuildingController.dispose();
-    areaController.dispose();
-    pincodeController.dispose();
-    cityController.dispose();
   }
 
   @override
@@ -85,9 +121,7 @@ class _AddressScreenState extends State<AddressScreen> {
       paymentConfiguration: PaymentConfiguration.fromJsonString(
         defaultApplePay,
       ),
-      onPaymentResult: (result) => debugPrint(
-        'Payment result: $result',
-      ),
+      onPaymentResult: onApplePayResult,
       paymentItems: paymentItems,
       style: ApplePayButtonStyle.black,
       width: double.infinity,
@@ -101,9 +135,7 @@ class _AddressScreenState extends State<AddressScreen> {
     var googlePayButton = GooglePayButton(
       paymentConfiguration:
           PaymentConfiguration.fromJsonString(defaultGooglePay),
-      onPaymentResult: (result) => debugPrint(
-        'Payment result: $result',
-      ),
+      onPaymentResult: onGooglePayResult,
       paymentItems: paymentItems,
       width: double.infinity,
       height: 50,
