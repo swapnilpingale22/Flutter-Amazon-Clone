@@ -72,6 +72,7 @@ class _AddressScreenState extends State<AddressScreen> {
       address: adddressToBeUsed,
       totalSum: double.parse(widget.totalAmount),
     );
+    Navigator.pop(context);
   }
 
   void onGooglePayResult(res) {
@@ -89,6 +90,7 @@ class _AddressScreenState extends State<AddressScreen> {
       address: adddressToBeUsed,
       totalSum: double.parse(widget.totalAmount),
     );
+    Navigator.pop(context);
   }
 
   void payPressed(String addressFromProvider) {

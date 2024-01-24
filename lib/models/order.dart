@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
 import 'package:flutter_amazon_clone/models/product.dart';
 
 class Order {
@@ -10,6 +11,7 @@ class Order {
   final String userId;
   final int orderedAt;
   final int status;
+  final num totalPrice;
   Order({
     required this.id,
     required this.products,
@@ -18,6 +20,7 @@ class Order {
     required this.userId,
     required this.orderedAt,
     required this.status,
+    required this.totalPrice,
   });
 
   Map<String, dynamic> toMap() {
@@ -29,6 +32,7 @@ class Order {
       'userId': userId,
       'orderedAt': orderedAt,
       'status': status,
+      'totalPrice': totalPrice,
     };
   }
 
@@ -42,6 +46,7 @@ class Order {
       userId: map['userId'] as String,
       orderedAt: map['orderedAt'] as int,
       status: map['status'] as int,
+      totalPrice: map['totalPrice'] as num,
     );
   }
 
