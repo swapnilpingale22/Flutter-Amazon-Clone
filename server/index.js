@@ -8,10 +8,10 @@ const productRouter = require("./routes/product");
 const userRouter = require("./routes/user");
 
 //init
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const app = express();
 const Url = "mongodb+srv://swapnil:Swapnil123@cluster0.dtqtzbq.mongodb.net/?retryWrites=true&w=majority"
-const localUrl = "mongodb://127.0.0.1:27017/Amazon_Clone_Db"
+// const localUrl = "mongodb://127.0.0.1:27017/Amazon_Clone_Db"
 
 //middlewares
 app.use(express.json());
@@ -30,5 +30,5 @@ mongoose.connect(Url)
     });
 
 app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server  is running on http://localhost:${PORT}`);
+    console.log(`Server  is running on ${PORT}`);
 });
