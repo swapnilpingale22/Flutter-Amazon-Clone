@@ -31,43 +31,48 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const AdminTopButtons(),
-        orders == null
-            ? const Loader()
-            : Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  itemCount: orders!.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                  ),
-                  itemBuilder: (context, index) {
-                    final orderData = orders![index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          OrderDetailsScreen.routeName,
-                          arguments: orderData,
-                        );
-                      },
-                      child: SizedBox(
-                        height: 140,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 5, bottom: 10),
-                          child: SingleProduct(
-                            imageUrl: orderData.products[0].images[0],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const AdminTopButtons(),
+          orders == null
+              ? const Loader()
+              : Padding(
+                  padding: const EdgeInsets.only(left: 5),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: orders!.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                    ),
+                    itemBuilder: (context, index) {
+                      final orderData = orders![index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            OrderDetailsScreen.routeName,
+                            arguments: orderData,
+                          );
+                        },
+                        child: SizedBox(
+                          height: 140,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(right: 5, bottom: 10),
+                            child: SingleProduct(
+                              imageUrl: orderData.products[0].images[0],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
-      ],
+        ],
+      ),
     );
   }
 

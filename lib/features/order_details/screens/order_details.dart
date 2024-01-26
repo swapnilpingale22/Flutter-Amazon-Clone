@@ -245,7 +245,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                   currentStep: currentStep,
                   controlsBuilder: (context, details) {
-                    if (user.type == 'admin') {
+                    if (user.type == 'admin' && currentStep < 3) {
                       return Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: CustomButton(
@@ -263,8 +263,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     Step(
                       title: const Text('Pending'),
                       content: const Text('Your order is yet to be delivered.'),
-                      isActive: currentStep > 0,
-                      state: currentStep > 0
+                      isActive: currentStep >= 0, //1
+                      state: currentStep >= 0
                           ? StepState.complete
                           : StepState.indexed,
                     ),
@@ -272,8 +272,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       title: const Text('Completed'),
                       content: const Text(
                           'Your order has been delivered, you are yet to sign.'),
-                      isActive: currentStep > 1,
-                      state: currentStep > 1
+                      isActive: currentStep >= 1, //2
+                      state: currentStep >= 1
                           ? StepState.complete
                           : StepState.indexed,
                     ),
@@ -281,8 +281,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       title: const Text('Received'),
                       content: const Text(
                           'Your order has been delivered and signed by you.'),
-                      isActive: currentStep > 2,
-                      state: currentStep > 2
+                      isActive: currentStep >= 2, //3
+                      state: currentStep >= 2
                           ? StepState.complete
                           : StepState.indexed,
                     ),
